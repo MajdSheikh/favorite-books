@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .forms {
+            display: flex;
+            justify-content: space-around;
+        }
+        .login {
+            height: 30px;
+            width: 70px;
+            box-shadow: 3px 3px;
+            background-color: white;
+        }
+        .register {
+            height: 30px;
+            width: 100px;
+            box-shadow: 3px 3px;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+<div class="forms">
+    <div>
+        <form method="POST" action="register-success/" class="form1">
+            {% csrf_token %}
+            <div>
+            <h1>Registration</h1>
+            </div><br>
+            <div>
+                <label>First Name</label>
+                <input type="text" name="first_name" class="first_name">
+            </div><br>
+            <div>
+                <label>Last Name</label>
+                <input type="text" name="last_name" class="last_name">
+            </div><br>
+            <div>
+                <label>Email</label>
+                <input type="text" name="email" class="email">
+            </div><br>
+            <div>
+                <label>Password</label>
+                <input type="password" name="password" class="password" >
+            </div><br>
+            <div>
+                <label>Confirm PW</label>
+                <input type="password" name="confirm_PW" class="password" >
+            </div><br>
+            <div>
+                <input type="submit" value="Register" class="register">
+            </div>
+        </form>
+    </div>
+    <div>
+        <form method="POST" action="success-login/" class="form1">
+            {% csrf_token %}
+            <div>
+            <h1>Login</h1>
+            </div><br>
+            <div>
+                <label>Email</label>
+                <input type="text" name="email" class="email" >
+            </div><br>
+            <div>
+                <label>Password</label>
+                <input type="password" name="password" class="password" >
+            </div><br>
+            <div>
+                <input type="submit" value="log in" class="login">
+            </div>
+        </form>
+    </div>
+</div> 
+{% if messages %}
+<ul class="messages">    
+    {% for message in messages %}    
+    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>    
+    {% endfor %}
+</ul>
+{% endif %}
+</body>
+</html>
