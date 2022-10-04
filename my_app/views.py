@@ -16,7 +16,7 @@ def success(request):
     context = {
         "user": User.objects.get(id = request.session['User_id'])
     }
-    return render(request, "success.html", context)
+    return redirect("/wall/")
 
 
 
