@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 4px  solid black;
+        }
+        .logoutLink {
+            display: flex;
+            align-items: center;
+            margin-right: 30px;
+            font-size: larger;
+        }
+        .main {
+            display: flex;
+            justify-content: space-evenly;
+        } 
+        .middle {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div>
+            <h1>Welcome, {{user.first_name}}</h1>
+        </div>
+        <div class="logoutLink">
+            <a href="/logout/">Logout</a>
+        </div>
+    </header>
+    
+    <main class="main">
+        <div class="form">
+        {% if user == book.uploaded_by %}
+        <form method="POST" action="update/">
+            {% csrf_token %}
+            <div>
+                <label>Title</label><br>
+                <input type="text" name="title" value="{{ book.title }}">
+            </div><br>
+            <p>Added by {{book.uploaded_by.first_name}} {{book.uploaded_by.last_name}}</p>
+            <p>Added on {{book.created_at}}</p>
+            <p>Last Updated on: {{book.updated_at}}</p>
+            <div>
+                <label>Descriptoin</label><br>
+                <input type="text" name="desc" value="{{ book.desc }}">
+            </div><br>
+            <div>
+                <input type="submit" value="update">
+            </div>
+        </form>
+        <div>
+            <button><a href="/delete_book/{{book.id}}/">Delete</a></button>
+        </div>
+    </div>
+    
+        {% else %}
+        <div class="middle">
+
+        
+        <div class="else">
+            <h3>{{book.title}}</h3>
+    <p>Added by: {{book.uploaded_by.first_name}} {{book.uploaded_by.last_name}}</p>
+    <p>Added on: {{book.created_at}}</p>
+    <p>Last updated: {{book.updated_at}}</p>
+    <p>Description: {{book.desc}}</p>
+        </div>
+    
+
+        {% endif %}
+
+         <div class="final">
+            <h1>Users Who Like This Book:</h1>
+            <ul>
+                {% for user in book.users_who_like.all %}
+                <li>
+                    <p>{{user.first_name}} {{user.last_name}}</p>
+                    {% if user.id == request.session.User_id %}
+                    <a href="/un_fav/{{book.id}}/">Un-Favorite</a>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+            {% if not user in book.users_who_like.all %}
+            <a href="/add_to_fav/{{book.id}}">Add to favorite</a>
+            {% endif %}
+        </div>
+    </div>
+
+    </main>
+    
+</body>
+</html>

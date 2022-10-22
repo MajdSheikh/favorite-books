@@ -1,3 +1,4 @@
+from distutils.command.upload import upload
 from django.db import models
 import re
 import bcrypt
@@ -41,3 +42,26 @@ class User(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = UserManager() 
+    # liked books
+    # books uploaded
+
+
+class BookManager(models.Manager):
+    def basicc_validator(self, postData):
+        
+        errors = {}
+        if len(postData["title"]) < 1:
+            errors["title"] = "title must be provided"
+        
+        if len(postData["desc"]) < 5:
+            errors["desc"] = "description must be at least 5 characters"
+        return errors
+
+class Book(models.Model):
+    title = models.CharField(max_length=255)
+    desc = models.TextField()
+    users_who_like = models.ManyToManyField(User, related_name="linked_books") #list of users who like a given book
+    uploaded_by = models.ForeignKey(User, related_name= "books_uploaded", on_delete = models.CASCADE) #the user who uploaded a given book
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    objects=BookManager()

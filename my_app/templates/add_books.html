@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 4px  solid black;
+        }
+        .logoutLink {
+            display: flex;
+            align-items: center;
+            margin-right: 30px;
+            font-size: larger;
+        }
+        .main {
+            display: flex;
+            justify-content: space-evenly;
+            margin-top: 20px;
+        }
+        .border {
+            border-bottom: 2px solid black;
+            margin-bottom: 10px;
+        }
+      
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div>
+            <h1>Welcome, {{user.first_name}}</h1>
+        </div>
+        <div class="logoutLink">
+            <a href="/logout/">Logout</a>
+        </div>
+    </header>
+
+
+    <main class="main">
+        <div class="form">
+            <form method="POST", action="/books/">
+                {% csrf_token %}
+                <div>
+                    <label>Title</label><br>
+                    <input type="text" name="title">
+                </div><br>
+                <div>
+                    <label>Description</label><br>
+                    <input type="text" name="desc">
+                </div><br>
+                <div>
+                    <input type="submit" value="Add">
+                </div>
+            </form>
+        </div>
+
+        <div class="list">
+            <h1>all Books</h1>
+    {% for book in books %}
+            <p><a href="/edit_book/{{book.id}}/">{{book.title}}</a></p>
+            <p>(Added by {{book.uploaded_by.first_name}} {{book.uploaded_by.last_name}} )</p>
+        {% if user in book.users_who_like.all %}
+            <p class="border">This is one of your favorite</p>
+            
+        {% else %}
+            <p class="border"><a href="/add_to_fav/{{book.id}}">Add to favorite</a></p>
+        {% endif %}
+            <br>
+            <br>
+    {% endfor %}
+        </div>
+    </main>
+
+{% if messages %}
+<ul class="messages">    
+    {% for message in messages %}    
+    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>    
+    {% endfor %}
+</ul>
+{% endif %}
+</body>
+</html>
