@@ -20,9 +20,13 @@ class UserManager(models.Manager):
 
         if len(postData["first_name"]) < 2:
             errors["first_name"] = "First name should be at least 2 characters"
+        if (postData["first_name"]).isalpha():
+            errors["first_name"] = "First name should be letters"
+
         if len(postData["last_name"]) < 2:
             errors["last_name"] = "Last name should be at least 2 characters"
-
+        if (postData["last_name"]).isalpha():
+            errors["last_name"] = "last name should be letters"
 
         if len(postData["password"]) < 8:
             errors["password"] = " your password should be at least 8 characters"
